@@ -1,0 +1,100 @@
+/* Modal */
+.modal {
+  background-color: rgba(0, 0, 0, 0.7); /* Fundo mais escuro para o overlay */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+
+/* Caixa do conteúdo */
+.modal-content {
+  background: #212529; /* Fundo escuro para o modal */
+  padding: 30px 40px;
+  border-radius: 15px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 5px 20px rgba(220, 53, 69, 0.5); /* Sombra vermelha */
+  border: 1px solid #dc3545;
+}
+
+.modal-content h2 {
+  color: #dc3545; /* Vermelho vibrante para o título */
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Formulário */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #f8f9fa; /* Branco/cinza claro para o texto */
+}
+
+input[type="password"] {
+  padding: 12px;
+  border: 1px solid #495057; /* Borda cinza escura */
+  background-color: #343a40; /* Fundo do input cinza escuro */
+  color: #f8f9fa; /* Texto do input branco */
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+input[type="password"]:focus {
+  outline: none;
+  border-color: #dc3545; /* Borda vermelha ao focar */
+  box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+}
+
+/* Botões */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+button.save {
+  background-color: #dc3545; /* Botão principal vermelho */
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  flex: 1;
+  transition: background-color 0.3s ease;
+}
+
+button.cancel {
+  background-color: transparent; /* Botão secundário transparente */
+  color: #dc3545; /* Texto vermelho */
+  padding: 12px 20px;
+  border: 2px solid #dc3545; /* Borda vermelha */
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  flex: 1;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button.save:hover {
+  background-color: #c82333; /* Vermelho mais escuro no hover */
+}
+
+button.cancel:hover {
+  background-color: #dc3545; /* Fundo vermelho no hover */
+  color: #fff; /* Texto branco no hover */
+}

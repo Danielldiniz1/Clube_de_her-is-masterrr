@@ -1,0 +1,31 @@
+/* Arquivo principal que importa todos os outros */
+@import 'base.css';
+@import 'layout.css';
+@import 'components.css';
+@import 'sections.css';
+@import 'pages/login.css';
+@import 'pages/cadastro.css';
+@import 'pages/contact.css';
+@import 'pages/about.css';
+@import 'pages/home.css';
+@import 'pages/faqs.css';
+@import 'pages/products.css';
+
+.toast {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border-radius: 5px;
+    animation: fadeOut 4s forwards;
+}
+
+.toast.error {
+    background-color: #f44336;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}

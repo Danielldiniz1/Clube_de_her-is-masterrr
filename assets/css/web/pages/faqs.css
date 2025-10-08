@@ -1,0 +1,125 @@
+.faqs-section {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+}
+
+.faqs-head {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.faqs-header h1 {
+    color: #f1f1f1;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.faqs-header p {
+    color: #f1f1f1;
+    font-size: 1.1rem;
+}
+
+.faqs-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+}
+
+.faq-question {
+    padding: 18px 20px;
+    background-color: #fff;
+    color: #333;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.faq-question:hover {
+    background-color: #f1f1f1;
+}
+
+.faq-question::after {
+    content: '+';
+    font-size: 1.5rem;
+    color: #dc3545;
+    position: absolute;
+    right: 20px;
+}
+
+.faq.active .faq-question::after {
+    content: '-';
+}
+
+.faq-answer {
+    background-color: #fff;
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq.active .faq-answer {
+    padding: 15px 20px;
+    max-height: 1000px;
+}
+
+.faq-answer p, .faq-answer ul {
+    margin-bottom: 15px;
+    color: black;
+}
+
+.faq-answer ul {
+    padding-left: 20px;
+}
+
+.faq-answer li {
+    margin-bottom: 5px;
+}
+
+.faqs-not-found {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+}
+
+.faqs-not-found p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.btn-primary {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #c82333;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .faqs-section {
+        padding: 40px 15px;
+    }
+
+    .faqs-header h1 {
+        font-size: 2rem;
+    }
+}

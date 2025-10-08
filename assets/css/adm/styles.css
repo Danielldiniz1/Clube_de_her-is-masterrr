@@ -1,0 +1,415 @@
+/* Estilos para a área administrativa */
+@import '../web/base.css';
+
+body.admin-area {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background); /* Use background color from main site */
+    color: var(--text); /* Use text color from main site */
+    margin: 0;
+    display: flex;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.admin-sidebar {
+    width: 280px;
+    background-color: var(--secondary); /* Dark grey for sidebar */
+    padding: 20px;
+    box-shadow: 5px 5px 0px black; /* Solid shadow like main site's comic-border */
+    border-right: 3px solid black; /* Strong black border */
+}
+
+.admin-sidebar h2 {
+    color: var(--primary); /* Strong red for title */
+    font-family: 'Bangers', cursive; /* Comic font for titles */
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+    text-align: center;
+    text-shadow: 2px 2px 0px black; /* Black text shadow */
+}
+
+.admin-sidebar ul {
+    list-style: none;
+    padding: 0;
+    flex-grow: 1;
+}
+
+.admin-sidebar ul li {
+    margin-bottom: 12px;
+}
+
+.admin-sidebar ul li a {
+    color: var(--text); /* Links in light grey/white */
+    text-decoration: none;
+    padding: 12px 15px;
+    display: block;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.admin-sidebar ul li a:hover {
+    background-color: var(--accent); /* Lighter red background on hover */
+    color: black; /* Black text for high contrast on red */
+    transform: translateX(5px);
+    box-shadow: 2px 2px 0px black;
+}
+
+.admin-sidebar ul li a.active {
+    background-color: var(--primary); /* Strong red background for active item */
+    color: black; /* Black text for high contrast on red */
+    font-weight: 700;
+    box-shadow: 3px 3px 0px black;
+}
+
+.admin-content { /* Renamed from .admin-content-wrapper for clarity in your code */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-main-content { /* Assuming you'll wrap your content in this class */
+    flex-grow: 1;
+    padding: 30px;
+}
+
+.admin-main-content h1 {
+    color: var(--primary); /* Strong red for main content titles */
+    font-family: 'Bangers', cursive; /* Comic font for main content titles */
+    font-size: 3rem;
+    margin-bottom: 40px;
+    text-shadow: 3px 3px 0px black;
+}
+
+/* Form Styles for Admin Area */
+.panel-card h3 {
+    font-family: 'Bangers', cursive;
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: center;
+    text-shadow: 2px 2px 0px black;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.form-group-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.form-group-checkbox label {
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+/* Applying the main site's card style to general elements in admin */
+.admin-main-content .panel-card {
+    background-color: var(--secondary); /* Dark grey background for cards */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 3px 3px 0px black; /* Comic-border style shadow */
+    margin-bottom: 30px;
+    transition: transform 0.3s ease;
+}
+
+.admin-main-content .panel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 5px 5px 0px black;
+}
+
+/* Button overrides for admin area */
+.btn-secondary {
+    background-color: var(--secondary);
+    color: var(--text);
+    border: 2px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background-color: var(--border);
+    color: var(--text);
+}
+
+.btn-action {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 0.5px;
+    /* Reset some comic styles for smaller buttons */
+    text-shadow: none;
+    box-shadow: 2px 2px 0px black;
+}
+
+/* Styling for main form buttons */
+.panel-card form .btn {
+    width: 100%;
+    padding: 15px 20px;
+    font-family: 'Bangers', cursive;
+    font-size: 1.3rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background-color: var(--primary);
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+    box-shadow: 3px 3px 0px black;
+    margin-top: 10px; /* Add some space above the button */
+}
+
+.panel-card form .btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0px black;
+    background-color: var(--accent);
+}
+
+.panel-card form .btn:disabled {
+    background-color: var(--border);
+    color: #888;
+    cursor: not-allowed;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.data-table th,
+.data-table td {
+    border: 2px solid var(--border);
+    padding: 15px; /* Aumentado para mais espaçamento interno */
+    text-align: left;
+    vertical-align: middle; /* Alinha o conteúdo verticalmente */
+}
+
+.data-table th {
+    background-color: var(--primary);
+    color: black;
+    font-family: 'Bangers', cursive;
+    letter-spacing: 1px; /* Adiciona espaçamento entre as letras do cabeçalho */
+}
+
+.data-table td .btn + .btn {
+    margin-left: 8px; /* Adiciona espaço entre botões na mesma célula */
+}
+
+.admin-footer {
+    background-color: var(--secondary); /* Dark grey for footer */
+    color: var(--text); /* Light text for footer */
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+    border-top: 3px solid black; /* Strong black border */
+    box-shadow: 0 -5px 0px var(--primary); /* Red shadow at the top of the footer */
+}
+
+/* Responsiveness for mobile sidebar menu */
+@media (max-width: 768px) {
+    body.admin-area {
+        flex-direction: column;
+    }
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        padding: 15px 20px;
+        border-right: none;
+        border-bottom: 3px solid black;
+        box-shadow: 0 5px 0px var(--primary); /* Red shadow for mobile header */
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 100;
+    }
+    .admin-sidebar h2 {
+        margin-bottom: 0;
+        font-size: 1.5rem;
+    }
+    .admin-sidebar nav ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: var(--secondary);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+    }
+    .admin-sidebar nav ul.active {
+        display: flex;
+    }
+    .admin-sidebar ul li {
+        margin: 0;
+        width: 100%;
+        text-align: center;
+    }
+    .admin-sidebar ul li a {
+        padding: 10px 15px;
+        border-radius: 0;
+    }
+    .admin-main-content {
+        padding: 20px;
+    }
+    .admin-main-content h1 {
+        font-size: 2rem;
+    }
+}
+
+/* Style for the mobile toggle button */
+.admin-menu-toggle {
+    display: none;
+    color: var(--primary); /* Red toggle icon */
+}
+@media (max-width: 768px) {
+    .admin-menu-toggle {
+        display: block;
+    }
+}
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    animation: toast-fade-in 0.5s forwards, toast-fade-out 0.5s 3.5s forwards;
+    background-color: #28a745; /* Verde para sucesso */
+    border-left: 5px solid #218838;
+    min-width: 250px;
+}
+
+.toast.error {
+    background-color: var(--primary); /* Vermelho para erro */
+    border-left: 5px solid #c82333;
+}
+
+/* Admin Modal Styles */
+.admin-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1500; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+.admin-modal .modal-content {
+    position: relative;
+    margin: 5% auto;
+    padding: 40px;
+    width: 90%;
+    max-width: 600px;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+.close-modal-btn {
+    color: var(--text);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.close-modal-btn:hover,
+.close-modal-btn:focus {
+    color: var(--primary);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Keyframes for Toast Animation */
+@keyframes toast-fade-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes toast-fade-out {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+

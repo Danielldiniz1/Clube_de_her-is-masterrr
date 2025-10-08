@@ -1,0 +1,11 @@
+RewriteEngine On
+Options All -Indexes
+RewriteBase /Clube_de_her-is-master/
+
+# Impede a reescrita de URLs para arquivos existentes na pasta assets
+RewriteRule ^assets/ - [L]
+
+# ROUTER URL Rewrite
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?route=/$1 [L,QSA]

@@ -1,0 +1,12 @@
+RewriteEngine On
+# Options All -Indexes
+# RewriteBase /Clube_de_her-is-master/api/
+
+# Passa o cabeçalho de autorização para o PHP
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# ROUTER URL Rewrite
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?route=/$1 [L,QSA]

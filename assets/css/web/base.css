@@ -1,0 +1,43 @@
+/* Reset e estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* assets/css/web/base.css */
+:root {
+    --primary: #ff3333; /* Red */
+    --background: #1a0d0d; /* Very dark almost black/red */
+    --secondary: #262626; /* Dark grey */
+    --text: #f5f5f5; /* Light grey/white */
+    --accent: #ff5050; /* Lighter red for accents */
+    --border: #333; /* Darker grey for borders */
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+/* Fontes temáticas */
+h1, h2, h3, .comic-font, .nav-menu a {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 1px;
+}
+
+/* Estilos de borda de quadrinhos */
+.comic-border {
+    border: 3px solid black;
+    box-shadow: 5px 5px 0px black;
+    position: relative;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
