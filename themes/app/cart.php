@@ -64,7 +64,9 @@ echo $this->layout("_theme");
         <form action="<?= url('app/carrinho/limpar'); ?>" method="post" style="display:inline-block; margin-right:10px;">
             <button type="submit" class="btn" style="background:#1a0d0d;">Limpar Carrinho</button>
         </form>
-        <a href="#" class="btn">Finalizar Compra</a>
+        <form action="<?= url('app/finalizar-compra'); ?>" method="post" style="display:inline-block;">
+            <button type="submit" class="btn" style="background:#0d1a0d;">Finalizar Compra</button>
+        </form>
     </div>
     <?php endif; ?>
 </div>

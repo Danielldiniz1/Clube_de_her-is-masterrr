@@ -36,6 +36,7 @@ $route->post("/carrinho/adicionar", "App:addCart");
 $route->post("/carrinho/atualizar", "App:updateCart");
 $route->post("/carrinho/remover", "App:removeCart");
 $route->post("/carrinho/limpar", "App:clearCart");
+$route->post("/finalizar-compra", "App:finalizePurchase");
 $route->get("/listadedesejos", "App:wishlist");
 $route->get("/meuclube", "App:myClub");
 $route->get("/minhascompras", "App:myBuys");

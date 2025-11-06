@@ -46,8 +46,17 @@
         case 'added_cart':
           showToast('Produto adicionado ao carrinho!', 'success');
           break;
+        case 'removed_cart':
+          showToast('Produto removido do carrinho!', 'success');
+          break;
+        case 'cleared_cart':
+          showToast('Carrinho limpo com sucesso!', 'success');
+          break;
+        case 'purchase_complete':
+          showToast('Compra finalizada! Comprovante enviado ao seu e-mail.', 'success');
+          break;
         default:
-          showToast('Operação concluída com sucesso.', 'success');
+          showToast('Produto adicionado ao carrinho', 'success');
           break;
       }
     }
@@ -68,6 +77,12 @@
           break;
         case 'user_not_found':
           showToast('Usuário não encontrado.', 'error');
+          break;
+        case 'empty_cart':
+          showToast('Seu carrinho está vazio.', 'error');
+          break;
+        case 'email_failed':
+          showToast('Falha ao enviar comprovante. Tente novamente.', 'error');
           break;
         default:
           showToast('Ocorreu um erro. Tente novamente.', 'error');

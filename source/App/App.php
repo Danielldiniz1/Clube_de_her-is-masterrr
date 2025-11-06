@@ -149,7 +149,7 @@ class App
 
         $cart = new \Source\Models\CartItem();
         $cart->removeItem((int)$user->id, $productId);
-        header('Location: ' . url('app/carrinho'));
+        header('Location: ' . url('app/carrinho?success=removed_cart'));
         exit;
     }
 
@@ -162,8 +162,77 @@ class App
         }
         $cart = new \Source\Models\CartItem();
         $cart->clear((int)$user->id);
-        header('Location: ' . url('app/carrinho'));
+        header('Location: ' . url('app/carrinho?success=cleared_cart'));
         exit;
+    }
+
+    public function finalizePurchase(array $data): void
+    {
+        $user = current_user();
+        if (!$user || empty($user->id)) {
+            header('Location: ' . url('login'));
+            exit;
+        }
+
+        // Buscar itens do carrinho
+        $cart = new \Source\Models\CartItem();
+        $items = $cart->listItemsWithProducts((int)$user->id);
+        if (empty($items)) {
+            header('Location: ' . url('app/carrinho?error=empty_cart'));
+            exit;
+        }
+
+        // Gerar número de pedido simples e calcular totais
+        $orderNumber = date('Ymd-His') . '-' . random_int(100, 999);
+        $total = 0.0;
+        $lines = [];
+        foreach ($items as $item) {
+            $name = htmlspecialchars($item->name ?? 'Produto');
+            $qty = (int)($item->quantity ?? 1);
+            $price = (float)($item->price ?? 0);
+            $subtotal = $qty * $price;
+            $total += $subtotal;
+            $lines[] = sprintf(
+                '%s x%d — R$ %s',
+                $name,
+                $qty,
+                number_format($subtotal, 2, ',', '.')
+            );
+        }
+
+        // Montar corpo do e-mail (HTML simples)
+        $body = '<h2>Comprovante de Compra</h2>';
+        $body .= '<p>Olá ' . htmlspecialchars($user->name ?? 'Cliente') . ',</p>';
+        $body .= '<p>Obrigado pela sua compra! Aqui estão os detalhes:</p>';
+        $body .= '<p><strong>Número do Pedido:</strong> ' . $orderNumber . '</p>';
+        $body .= '<ul>';
+        foreach ($lines as $line) {
+            $body .= '<li>' . $line . '</li>';
+        }
+        $body .= '</ul>';
+        $body .= '<p><strong>Total:</strong> R$ ' . number_format($total, 2, ',', '.') . '</p>';
+        $body .= '<p>Data: ' . date('d/m/Y H:i') . '</p>';
+
+        // Enviar e-mail
+        try {
+            $email = new \Source\Core\Email();
+            $sent = $email->sendEmail((string)($user->email ?? ''),
+                'Comprovante de Compra — Pedido ' . $orderNumber,
+                $body
+            );
+        } catch (\Throwable $e) {
+            $sent = false;
+        }
+
+        // Se enviado, limpar carrinho
+        if ($sent) {
+            $cart->clear((int)$user->id);
+            header('Location: ' . url('app/carrinho?success=purchase_complete'));
+            exit;
+        } else {
+            header('Location: ' . url('app/carrinho?error=email_failed'));
+            exit;
+        }
     }
 
 }
