@@ -39,7 +39,18 @@ class App
     }
     public function wishlist (array $data)
     {
-        echo $this->view->render("wishlist", []);
+        $user = current_user();
+        $items = [];
+        if ($user && isset($user->id)) {
+            require_once __DIR__ . '/../Models/WishlistItem.php';
+            $wl = new \Source\Models\WishlistItem();
+            $wl->ensureTable();
+            $items = $wl->listItemsWithProducts((int)$user->id);
+        }
+        echo $this->view->render("wishlist", [
+            "items" => $items,
+            "user" => $user
+        ]);
     }
     public function myClub (array $data)
     {
@@ -47,7 +58,18 @@ class App
     }
     public function myBuys (array $data)
     {
-        echo $this->view->render("myBuys", []);
+        $user = current_user();
+        $orders = [];
+        if ($user && isset($user->id)) {
+            require_once __DIR__ . '/../Models/Order.php';
+            $orderModel = new \Source\Models\Order();
+            $orderModel->ensureTables();
+            $orders = $orderModel->listByUser((int)$user->id);
+        }
+        echo $this->view->render("myBuys", [
+            "orders" => $orders,
+            "user" => $user
+        ]);
     }
     public function purchaseTest(array $data)
     {
@@ -166,6 +188,48 @@ class App
         exit;
     }
 
+    // --- Wishlist ---
+    public function addWishlist(array $data): void
+    {
+        $user = current_user();
+        if (!$user || empty($user->id)) {
+            header('Location: ' . url('login'));
+            exit;
+        }
+        $productId = (int)($data['product_id'] ?? 0);
+        if ($productId <= 0) {
+            header('Location: ' . url('app/produtos'));
+            exit;
+        }
+        require_once __DIR__ . '/../Models/WishlistItem.php';
+        $wl = new \Source\Models\WishlistItem();
+        $wl->ensureTable();
+        $wl->add((int)$user->id, $productId);
+        // Fallback sem JS: permanecer na página de produtos com toast
+        header('Location: ' . url('app/produtos?success=added_wishlist'));
+        exit;
+    }
+
+    public function removeWishlist(array $data): void
+    {
+        $user = current_user();
+        if (!$user || empty($user->id)) {
+            header('Location: ' . url('login'));
+            exit;
+        }
+        $productId = (int)($data['product_id'] ?? 0);
+        if ($productId <= 0) {
+            header('Location: ' . url('app/listadedesejos'));
+            exit;
+        }
+        require_once __DIR__ . '/../Models/WishlistItem.php';
+        $wl = new \Source\Models\WishlistItem();
+        $wl->ensureTable();
+        $wl->remove((int)$user->id, $productId);
+        header('Location: ' . url('app/listadedesejos?success=removed_wishlist'));
+        exit;
+    }
+
     public function finalizePurchase(array $data): void
     {
         $user = current_user();
@@ -181,39 +245,31 @@ class App
             header('Location: ' . url('app/carrinho?error=empty_cart'));
             exit;
         }
-
-        // Gerar número de pedido simples e calcular totais
-        $orderNumber = date('Ymd-His') . '-' . random_int(100, 999);
-        $total = 0.0;
-        $lines = [];
-        foreach ($items as $item) {
-            $name = htmlspecialchars($item->name ?? 'Produto');
-            $qty = (int)($item->quantity ?? 1);
-            $price = (float)($item->price ?? 0);
-            $subtotal = $qty * $price;
-            $total += $subtotal;
-            $lines[] = sprintf(
-                '%s x%d — R$ %s',
-                $name,
-                $qty,
-                number_format($subtotal, 2, ',', '.')
-            );
+        // Persistir pedido e itens
+        require_once __DIR__ . '/../Models/Order.php';
+        $orderModel = new \Source\Models\Order();
+        $orderModel->ensureTables();
+        $created = $orderModel->createFromCart((int)$user->id, $items);
+        if (!$created) {
+            header('Location: ' . url('app/carrinho?error=server_error'));
+            exit;
         }
 
-        // Montar corpo do e-mail (HTML simples)
+        $orderNumber = $created['order_number'];
+        $total = (float)$created['total'];
+
+        // Limpar carrinho após salvar pedido
+        $cart->clear((int)$user->id);
+
+        // Corpo do e-mail do comprovante
         $body = '<h2>Comprovante de Compra</h2>';
         $body .= '<p>Olá ' . htmlspecialchars($user->name ?? 'Cliente') . ',</p>';
         $body .= '<p>Obrigado pela sua compra! Aqui estão os detalhes:</p>';
         $body .= '<p><strong>Número do Pedido:</strong> ' . $orderNumber . '</p>';
-        $body .= '<ul>';
-        foreach ($lines as $line) {
-            $body .= '<li>' . $line . '</li>';
-        }
-        $body .= '</ul>';
         $body .= '<p><strong>Total:</strong> R$ ' . number_format($total, 2, ',', '.') . '</p>';
         $body .= '<p>Data: ' . date('d/m/Y H:i') . '</p>';
 
-        // Enviar e-mail
+        // Enviar e-mail (não bloqueia o registro do pedido)
         try {
             $email = new \Source\Core\Email();
             $sent = $email->sendEmail((string)($user->email ?? ''),
@@ -224,15 +280,13 @@ class App
             $sent = false;
         }
 
-        // Se enviado, limpar carrinho
-        if ($sent) {
-            $cart->clear((int)$user->id);
-            header('Location: ' . url('app/carrinho?success=purchase_complete'));
-            exit;
-        } else {
-            header('Location: ' . url('app/carrinho?error=email_failed'));
-            exit;
+        // Redireciona com toasts; se e-mail falhou, retornamos ambos os parâmetros
+        $redirect = 'app/carrinho?success=purchase_complete';
+        if (!$sent) {
+            $redirect .= '&error=email_failed';
         }
+        header('Location: ' . url($redirect));
+        exit;
     }
 
 }

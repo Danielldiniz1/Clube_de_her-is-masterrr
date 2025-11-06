@@ -1,8 +1,13 @@
 <?php
-    echo $this->layout("_theme");
+echo $this->layout("_theme");
 ?>
 <div class="container">
-        <h2>Histórico de Compras</h2>
+    <h2>Histórico de Compras</h2>
+
+    <?php if (empty($orders)): ?>
+        <p>Você ainda não possui compras registradas.</p>
+        <a href="<?= url('app/produtos'); ?>" class="btn">Ver Produtos</a>
+    <?php else: ?>
         <table class="custom-table">
             <thead>
                 <tr>
@@ -10,55 +15,18 @@
                     <th>Data</th>
                     <th>Status</th>
                     <th>Total</th>
-                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>#202401</td>
-                    <td>20/05/2024</td>
-                    <td>Entregue</td>
-                    <td>R$ 529,70</td>
-                    <td><a href="#" class="btn btn-secondary">Detalhes</a></td>
-                </tr>
-                 </tbody>
-            <tbody>
-                <tr>
-                    <td>#202401</td>
-                    <td>20/05/2024</td>
-                    <td>Entregue</td>
-                    <td>R$ 529,70</td>
-                    <td><a href="#" class="btn btn-secondary">Detalhes</a></td>
-                </tr>
-                 </tbody>
-            <tbody>
-                <tr>
-                    <td>#202401</td>
-                    <td>20/05/2024</td>
-                    <td>Entregue</td>
-                    <td>R$ 529,70</td>
-                    <td><a href="#" class="btn btn-secondary">Detalhes</a></td>
-                </tr>
-                 </tbody>
-            <tbody>
-                <tr>
-                    <td>#202401</td>
-                    <td>20/05/2024</td>
-                    <td>Entregue</td>
-                    <td>R$ 529,70</td>
-                    <td><a href="#" class="btn btn-secondary">Detalhes</a></td>
-                </tr>
-                 </tbody>
-            <tbody>
-                <tr>
-                    <td>#202401</td>
-                    <td>20/05/2024</td>
-                    <td>Entregue</td>
-                    <td>R$ 529,70</td>
-                    <td><a href="#" class="btn btn-secondary">Detalhes</a></td>
-                </tr>
-                 </tbody>
+                <?php foreach ($orders as $order): ?>
+                    <tr>
+                        <td>#<?= htmlspecialchars($order->order_number) ?></td>
+                        <td><?= date('d/m/Y H:i', strtotime($order->created_at)) ?></td>
+                        <td><?= htmlspecialchars(ucfirst($order->status)) ?></td>
+                        <td>R$ <?= number_format((float)$order->total, 2, ',', '.') ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
         </table>
-    </div>
-</body>
-</html>
+    <?php endif; ?>
+</div>

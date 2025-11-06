@@ -46,6 +46,12 @@
         case 'added_cart':
           showToast('Produto adicionado ao carrinho!', 'success');
           break;
+        case 'added_wishlist':
+          showToast('Produto adicionado à lista de desejos!', 'success');
+          break;
+        case 'removed_wishlist':
+          showToast('Produto removido da lista de desejos!', 'success');
+          break;
         case 'removed_cart':
           showToast('Produto removido do carrinho!', 'success');
           break;

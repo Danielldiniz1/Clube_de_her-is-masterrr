@@ -87,9 +87,12 @@
                                 </button>
                             <?php endif; ?>
                             
-                            <button class="btn-wishlist" title="Adicionar à Lista de Desejos" disabled>
-                                ❤️
-                            </button>
+                            <form action="<?= url('app/wishlist/adicionar'); ?>" method="post" style="margin-left:8px;">
+                                <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                                <button type="submit" class="btn-wishlist" title="Adicionar à Lista de Desejos">
+                                    ❤️
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -507,6 +510,43 @@
         }
     }
 </style>
+
+<?php $this->start("post-scripts"); ?>
+<script>
+// Intercepta envio do coração para adicionar à wishlist sem navegar
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.querySelector('.products-grid');
+  if (!container) return;
+
+  container.addEventListener('submit', async (ev) => {
+    const form = ev.target;
+    if (!(form instanceof HTMLFormElement)) return;
+    const action = (form.action || '').toLowerCase();
+    if (!action.includes('/app/wishlist/adicionar')) return;
+
+    ev.preventDefault();
+    try {
+      const formData = new FormData(form);
+      const resp = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+      });
+      if (!resp.ok) {
+        throw new Error('Falha ao adicionar à lista de desejos');
+      }
+      if (window.showToast) {
+        window.showToast('Produto adicionado à lista de desejos!', 'success');
+      }
+    } catch (err) {
+      if (window.showToast) {
+        window.showToast('Não foi possível adicionar à lista de desejos.', 'error');
+      }
+    }
+  });
+});
+</script>
+<?php $this->end(); ?>
 
 <?php $this->start("post-scripts"); ?>
 <script>
