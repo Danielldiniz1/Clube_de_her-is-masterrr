@@ -15,6 +15,9 @@
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="<?= url("themes/app/style.css"); ?>">
+    <link rel="stylesheet" href="<?= url("assets/css/web/components.css"); ?>">
+    <script>window.__APP_BASE = "<?= url(); ?>";</script>
+    <script src="<?= url("assets/js/web/scripts-toasts.js"); ?>" defer></script>
     <?php if ($this->section("specific-script")): ?>
         <?= $this->section("specific-script"); ?>
     <?php endif; ?>

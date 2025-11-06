@@ -508,6 +508,68 @@
     }
 </style>
 
+<?php $this->start("post-scripts"); ?>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const APP_BASE = typeof window.__APP_BASE === 'string' ? window.__APP_BASE : `${window.location.origin}`;
+  const apiAddUrl = `${APP_BASE}/api/cart/add`;
+
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+  }
+
+  function handleAddToCart(form) {
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const token = getCookie('token');
+      if (!token) {
+        if (typeof window.showToast === 'function') {
+          window.showToast('Você precisa estar logado para adicionar ao carrinho.', 'error');
+        }
+        return;
+      }
+
+      const productId = form.querySelector('input[name="product_id"]').value;
+      const quantity = form.querySelector('input[name="quantity"]').value || '1';
+
+      const body = new URLSearchParams({ product_id: String(productId), quantity: String(quantity) });
+
+      form.querySelector('button[type="submit"]').disabled = true;
+
+      try {
+        const res = await fetch(apiAddUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Bearer ' + token
+          },
+          body
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || (data && data.type === 'error')) {
+          throw new Error(data?.message || data?.mensagem || 'Falha ao adicionar ao carrinho');
+        }
+
+        if (typeof window.showToast === 'function') {
+          window.showToast('Produto adicionado ao carrinho!', 'success');
+        }
+      } catch (err) {
+        if (typeof window.showToast === 'function') {
+          window.showToast(err.message || 'Erro ao adicionar ao carrinho', 'error');
+        }
+      } finally {
+        form.querySelector('button[type="submit"]').disabled = false;
+      }
+    });
+  }
+
+  document.querySelectorAll('form[action$="app/carrinho/adicionar"]').forEach(handleAddToCart);
+});
+</script>
+<?php $this->end(); ?>
+
 <script>
     // Carrossel de Imagens
     function changeImage(productId, direction) {
