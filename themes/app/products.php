@@ -74,16 +74,20 @@
                         
                         <div class="product-actions">
                             <?php if ($product['stock'] > 0): ?>
-                                <button class="btn-add-cart" onclick="addToCart(<?= $product['id'] ?>)">
-                                    🛒 ADICIONAR AO CARRINHO
-                                </button>
+                                <form action="<?= url('app/carrinho/adicionar'); ?>" method="post" style="flex:1; display:flex; gap:8px; align-items:center;">
+                                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn-add-cart">
+                                        🛒 ADICIONAR AO CARRINHO
+                                    </button>
+                                </form>
                             <?php else: ?>
                                 <button class="btn-add-cart" disabled>
                                     PRODUTO ESGOTADO
                                 </button>
                             <?php endif; ?>
                             
-                            <button class="btn-wishlist" onclick="addToWishlist(<?= $product['id'] ?>)" title="Adicionar à Lista de Desejos">
+                            <button class="btn-wishlist" title="Adicionar à Lista de Desejos" disabled>
                                 ❤️
                             </button>
                         </div>
@@ -584,21 +588,7 @@
         }
     });
 
-function addToCart(productId) {
-    // Implementar lógica do carrinho
-    const button = event.target;
-    const originalText = button.textContent;
-    
-    button.textContent = '✅ ADICIONADO!';
-    button.style.background = '#28a745';
-    
-    setTimeout(() => {
-        button.textContent = originalText;
-        button.style.background = '#ff3333';
-    }, 2000);
-    
-    console.log('Produto adicionado ao carrinho! (ID: ' + productId + ')');
-}
+// Removido: a função inline addToCart sobrescrevia a implementação correta do módulo
 
 function addToWishlist(productId) {
     // Implementar lógica da lista de desejos
@@ -614,5 +604,4 @@ function addToWishlist(productId) {
 </script>
 
 <?php $this->start("post-scripts"); ?>
-<script type="module" src="<?= url("assets/js/app/scripts-cart.js"); ?>" async></script>
 <?php $this->end(); ?>

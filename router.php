@@ -1,19 +1,12 @@
 <?php
-// Simple router for PHP built-in server to route all requests to index.php
-// Serves existing static files directly; otherwise boots the app router.
-if (php_sapi_name() === 'cli-server') {
-    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $fullPath = __DIR__ . $path;
+// Simple router for PHP built-in server to support pretty URLs
+$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$file = __DIR__ . $requestUri;
 
-    if ($path !== '/' && file_exists($fullPath) && is_file($fullPath)) {
-        return false; // Serve the requested resource as-is.
-    }
-
-    // Route API requests to api/index.php
-    if (strpos($path, '/api/') === 0) {
-        require __DIR__ . '/api/index.php';
-        return true;
-    }
+if ($requestUri !== '/' && is_file($file)) {
+    // Serve static files directly
+    return false;
 }
 
+// Fallback to index.php for app routing
 require __DIR__ . '/index.php';

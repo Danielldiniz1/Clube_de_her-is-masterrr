@@ -26,7 +26,16 @@ class App
 
     public function cart (array $data)
     {
-        echo $this->view->render("cart", []);
+        $user = current_user();
+        $items = [];
+        if ($user && isset($user->id)) {
+            $cart = new \Source\Models\CartItem();
+            $items = $cart->listItemsWithProducts((int)$user->id);
+        }
+        echo $this->view->render("cart", [
+            "items" => $items,
+            "user" => $user
+        ]);
     }
     public function wishlist (array $data)
     {
@@ -64,6 +73,89 @@ class App
         echo $this->view->render("products", [
             "products" => $products
         ]);
+    }
+
+    // --- Carrinho server-side ---
+    public function addCart(array $data): void
+    {
+        $user = current_user();
+        if (!$user || empty($user->id)) {
+            header('Location: ' . url('login'));
+            exit;
+        }
+
+        $productId = (int)($data['product_id'] ?? 0);
+        $quantity = (int)($data['quantity'] ?? 1);
+        if ($productId <= 0 || $quantity <= 0) {
+            header('Location: ' . url('app/produtos'));
+            exit;
+        }
+
+        $productModel = new \Source\Models\Product();
+        $product = $productModel->selectById($productId);
+        if (!$product) {
+            header('Location: ' . url('app/produtos'));
+            exit;
+        }
+
+        $cart = new \Source\Models\CartItem();
+        $cart->addOrIncrement((int)$user->id, $productId, $quantity);
+        header('Location: ' . url('app/carrinho'));
+        exit;
+    }
+
+    public function updateCart(array $data): void
+    {
+        $user = current_user();
+        if (!$user || empty($user->id)) {
+            header('Location: ' . url('login'));
+            exit;
+        }
+
+        $productId = (int)($data['product_id'] ?? 0);
+        $quantity = (int)($data['quantity'] ?? 1);
+        if ($productId <= 0 || $quantity <= 0) {
+            header('Location: ' . url('app/carrinho'));
+            exit;
+        }
+
+        $cart = new \Source\Models\CartItem();
+        $cart->setQuantity((int)$user->id, $productId, $quantity);
+        header('Location: ' . url('app/carrinho'));
+        exit;
+    }
+
+    public function removeCart(array $data): void
+    {
+        $user = current_user();
+        if (!$user || empty($user->id)) {
+            header('Location: ' . url('login'));
+            exit;
+        }
+
+        $productId = (int)($data['product_id'] ?? 0);
+        if ($productId <= 0) {
+            header('Location: ' . url('app/carrinho'));
+            exit;
+        }
+
+        $cart = new \Source\Models\CartItem();
+        $cart->removeItem((int)$user->id, $productId);
+        header('Location: ' . url('app/carrinho'));
+        exit;
+    }
+
+    public function clearCart(array $data): void
+    {
+        $user = current_user();
+        if (!$user || empty($user->id)) {
+            header('Location: ' . url('login'));
+            exit;
+        }
+        $cart = new \Source\Models\CartItem();
+        $cart->clear((int)$user->id);
+        header('Location: ' . url('app/carrinho'));
+        exit;
     }
 
 }

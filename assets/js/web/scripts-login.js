@@ -6,7 +6,9 @@ const senhaInput = document.getElementById("password");
 const toastContainer = document.getElementById("toast-container");
 
 
-const api = new HttpClientBase("http://localhost/Clube_de_her-is-master/api/users/"); 
+// Use the current origin to avoid host mismatches (localhost vs 127.0.0.1)
+const apiBase = `${window.location.origin}/api/users/`;
+const api = new HttpClientBase(apiBase); 
 
 /**
  * Exibe uma notificação toast na tela.
@@ -39,14 +41,17 @@ form.addEventListener("submit", async (event) => {
         const response = await api.post("login", formdata);
 
         if (response.type === "success") {
-            localStorage.setItem("token", response.data.user.token);
+            const token = response.data.user.token;
+            localStorage.setItem("token", token);
             localStorage.setItem("userId", JSON.stringify(response.data.user.id));
             localStorage.setItem("dataUser", JSON.stringify(response.data.user));
- 
-            const currentUrl = window.location.href;
-            // Substitui 'login' no final da URL por 'app' para redirecionar
-            const appUrl = currentUrl.replace(/login\/?$/, 'app');
-            window.location.href = appUrl;
+
+            // Grava cookie para autenticação server-side (expira em ~90min)
+            const expires = new Date(Date.now() + 90 * 60 * 1000).toUTCString();
+            document.cookie = `token=${token}; expires=${expires}; path=/`;
+
+            // Redirect reliably to /app on the same origin
+            window.location.href = `${window.location.origin}/app`;
 
         } else {
             showToast(response.message || "Ocorreu um erro inesperado.", 'error');
