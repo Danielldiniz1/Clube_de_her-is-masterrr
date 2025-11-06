@@ -4,6 +4,7 @@
 <?php
   $this->start("specific-script");
 ?>
+<script>window.__APP_BASE = "<?= url(); ?>";</script>
 <script type="module" src="<?= url("assets/js/web/scripts-login.js"); ?>" async></script>
 <?php
     $this->end();

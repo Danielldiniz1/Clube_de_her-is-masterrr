@@ -114,5 +114,21 @@ echo '</main>';
     <?= $this->section("post-scripts"); ?>
   <?php endif; ?>
 
+  <script>
+    // Sincroniza token do localStorage com cookie, garantindo acesso nas rotas /app
+    (function(){
+      function getCookie(name){
+        const m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return m ? decodeURIComponent(m[2]) : null;
+      }
+      var c = getCookie('token');
+      var t = localStorage.getItem('token');
+      if (t && !c) {
+        var expires = new Date(Date.now() + 90 * 60 * 1000).toUTCString();
+        document.cookie = 'token=' + t + '; expires=' + expires + '; path=/';
+      }
+    })();
+  </script>
+
 </body>
 </html>

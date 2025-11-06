@@ -6,13 +6,9 @@ const senhaInput = document.getElementById("password");
 const toastContainer = document.getElementById("toast-container");
 
 
-// Base dinâmica: considera a subpasta do projeto (ex.: /Clube_de_her-is-master)
-const basePath = (() => {
-    const parts = window.location.pathname.split('/').filter(Boolean);
-    // Primeiro segmento após a raiz representa a pasta do projeto
-    return parts.length > 0 ? `/${parts[0]}` : '';
-})();
-const apiBase = `${window.location.origin}${basePath}/api/users/`;
+// Base confiável fornecida pelo servidor via window.__APP_BASE
+const APP_BASE = typeof window.__APP_BASE === 'string' ? window.__APP_BASE : `${window.location.origin}`;
+const apiBase = `${APP_BASE}/api/users/`;
 const api = new HttpClientBase(apiBase); 
 
 /**
@@ -55,8 +51,8 @@ form.addEventListener("submit", async (event) => {
             const expires = new Date(Date.now() + 90 * 60 * 1000).toUTCString();
             document.cookie = `token=${token}; expires=${expires}; path=/`;
 
-            // Redirect reliably to /app on the same origin
-            window.location.href = `${window.location.origin}/app`;
+            // Redireciona para /app respeitando subpasta do projeto
+            window.location.href = `${APP_BASE}/app`;
 
         } else {
             showToast(response.message || "Ocorreu um erro inesperado.", 'error');
