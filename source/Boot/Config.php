@@ -14,8 +14,8 @@ const CONF_URL_BASE = "http://localhost/Clube_de_her-is-master";
 const CONF_MAIL_HOST = 'smtp.gmail.com';
 const CONF_MAIL_PORT = 465;
 const CONF_MAIL_USER = 'fortedinizdaniel@gmail.com'; // SEU E-MAIL GMAIL
-const CONF_MAIL_PASS = 'snrh knfq zfqw eaoh';      // SUA SENHA DE APP GERADA NO GMAIL
-const CONF_MAIL_SENDER_NAME = 'TechBarber Studio';
+const CONF_MAIL_PASS = 'nzcu vvsf pccq suqj';      // SUA SENHA DE APP GERADA NO GMAIL
+const CONF_MAIL_SENDER_NAME = 'Clube de heróis';
 const CONF_MAIL_SENDER_EMAIL = 'fortedinizdaniel@gmail.com'; // SEU E-MAIL GMAIL
 
 /*
