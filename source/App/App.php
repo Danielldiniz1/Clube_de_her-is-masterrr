@@ -107,7 +107,8 @@ class App
 
         $cart = new \Source\Models\CartItem();
         $cart->addOrIncrement((int)$user->id, $productId, $quantity);
-        header('Location: ' . url('app/carrinho'));
+        // Volta para a página de produtos com indicador de sucesso
+        header('Location: ' . url('app/produtos?success=added_cart'));
         exit;
     }
 

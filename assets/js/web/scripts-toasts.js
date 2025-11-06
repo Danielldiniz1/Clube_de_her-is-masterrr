@@ -43,6 +43,9 @@
         case 'password_reset':
           showToast('Senha atualizada com sucesso!', 'success');
           break;
+        case 'added_cart':
+          showToast('Produto adicionado ao carrinho!', 'success');
+          break;
         default:
           showToast('Operação concluída com sucesso.', 'success');
           break;

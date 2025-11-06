@@ -566,6 +566,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.querySelectorAll('form[action$="app/carrinho/adicionar"]').forEach(handleAddToCart);
+  // Robustez: também seleciona qualquer form cujo action contenha 'carrinho/adicionar'
+  document.querySelectorAll('form[action*="carrinho/adicionar"]').forEach(form => {
+    if (!form.__ajaxBound) { handleAddToCart(form); form.__ajaxBound = true; }
+  });
+  // Intercepta clique direto no botão
+  document.querySelectorAll('.btn-add-cart').forEach(btn => {
+    const form = btn.closest('form');
+    if (form && !form.__ajaxBoundClick) {
+      btn.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        form.dispatchEvent(new Event('submit', { cancelable: true }));
+      });
+      form.__ajaxBoundClick = true;
+    }
+  });
 });
 </script>
 <?php $this->end(); ?>
