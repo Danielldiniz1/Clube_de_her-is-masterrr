@@ -4,6 +4,7 @@ ob_start();
 use Source\App\Api\Users;
 use Source\App\Api\Clubs;
 use Source\App\Api\Products;
+use Source\App\Api\Cart;
 
 require  __DIR__ . "/../vendor/autoload.php";
 
@@ -37,6 +38,18 @@ $route->delete("/{id}", "Users:deleteUser"); // Rota para admin deletar qualquer
 $route->post("/profile", "Users:updateProfile");
 $route->post("/set-password","Users:setPassword");
 $route->post("/photo", "Users:updatePhoto");
+
+$route->group("null");
+
+/* CART */
+
+$route->group("/cart");
+
+$route->get("/items", "Cart:listItems");
+$route->post("/add", "Cart:add");
+$route->put("/item/{productId}", "Cart:updateItem");
+$route->delete("/item/{productId}", "Cart:removeItem");
+$route->delete("/clear", "Cart:clear");
 
 $route->group("null");
 

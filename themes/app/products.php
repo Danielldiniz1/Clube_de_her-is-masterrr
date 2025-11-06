@@ -612,3 +612,7 @@ function addToWishlist(productId) {
     console.log('Produto adicionado à lista de desejos! (ID: ' + productId + ')');
 }
 </script>
+
+<?php $this->start("post-scripts"); ?>
+<script type="module" src="<?= url("assets/js/app/scripts-cart.js"); ?>" async></script>
+<?php $this->end(); ?>

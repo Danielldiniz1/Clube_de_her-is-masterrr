@@ -197,3 +197,15 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
     INDEX idx_token (token),
     INDEX idx_email (email)
 );
+
+-- Tabela de itens de carrinho por usuário
+CREATE TABLE IF NOT EXISTS cart_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    UNIQUE KEY uniq_user_product (user_id, product_id)
+);
