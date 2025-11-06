@@ -70,4 +70,41 @@ echo $this->layout("_theme");
 </div>
 
 <?php $this->start("post-scripts"); ?>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const table = document.getElementById('cart-table');
+    const totalEl = document.getElementById('cart-total');
+
+    const recalc = () => {
+        if (!table || !totalEl) return;
+        let total = 0;
+        table.querySelectorAll('tbody tr').forEach(row => {
+            const priceCell = row.querySelector('td:nth-child(2)');
+            const qtyInput = row.querySelector('input[name="quantity"]');
+            const subtotalCell = row.querySelector('td:nth-child(4)');
+
+            if (!priceCell || !qtyInput || !subtotalCell) return;
+
+            // Extrai o preço em formato pt-BR e converte para número
+            const priceText = (priceCell.textContent || '').replace(/[^0-9,.-]/g, '').replace(/\./g, '').replace(',', '.');
+            const price = parseFloat(priceText) || 0;
+            const qty = Math.max(1, parseInt(qtyInput.value || '1', 10));
+
+            const subtotal = price * qty;
+            subtotalCell.textContent = 'R$ ' + subtotal.toFixed(2).replace('.', ',');
+            total += subtotal;
+        });
+        totalEl.textContent = 'Total: R$ ' + total.toFixed(2).replace('.', ',');
+    };
+
+    // Atualiza valores automaticamente ao editar quantidade
+    table.querySelectorAll('input[name="quantity"]').forEach(inp => {
+        inp.addEventListener('input', recalc);
+        inp.addEventListener('change', recalc);
+    });
+
+    // Recalcula ao carregar
+    recalc();
+});
+</script>
 <?php $this->end(); ?>

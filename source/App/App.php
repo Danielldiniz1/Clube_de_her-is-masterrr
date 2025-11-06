@@ -49,6 +49,13 @@ class App
     {
         echo $this->view->render("myBuys", []);
     }
+    public function purchaseTest(array $data)
+    {
+        $user = current_user();
+        echo $this->view->render("purchase-test", [
+            "user" => $user
+        ]);
+    }
     public function products (array $data)
     {
         // Buscar produtos diretamente do banco de dados

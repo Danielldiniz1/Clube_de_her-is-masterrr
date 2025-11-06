@@ -28,7 +28,8 @@ class Cart extends Api
     {
         $this->auth();
 
-        $productId = (int)($data['product_id'] ?? 0);
+        // Aceita tanto snake_case quanto camelCase
+        $productId = (int)($data['product_id'] ?? $data['productId'] ?? 0);
         $quantity = (int)($data['quantity'] ?? 1);
 
         if (!$productId || $quantity < 1) {
@@ -57,7 +58,8 @@ class Cart extends Api
     {
         $this->auth();
 
-        $productId = (int)($data['productId'] ?? 0);
+        // Aceita tanto snake_case quanto camelCase
+        $productId = (int)($data['productId'] ?? $data['product_id'] ?? 0);
         $quantity = (int)($data['quantity'] ?? 1);
 
         if (!$productId || $quantity < 1) {
@@ -78,7 +80,8 @@ class Cart extends Api
     {
         $this->auth();
 
-        $productId = (int)($data['productId'] ?? 0);
+        // Aceita tanto snake_case quanto camelCase
+        $productId = (int)($data['productId'] ?? $data['product_id'] ?? 0);
         if (!$productId) {
             $this->call(400, "error", "ID do produto inválido", "validation_error")->back();
             return;

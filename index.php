@@ -31,6 +31,7 @@ $route->group("/app");
 $route->get("/", "App:home");
 $route->get("/perfil", "App:profile");
 $route->get("/carrinho", "App:cart");
+$route->get("/teste-fluxo-compra", "App:purchaseTest");
 $route->post("/carrinho/adicionar", "App:addCart");
 $route->post("/carrinho/atualizar", "App:updateCart");
 $route->post("/carrinho/remover", "App:removeCart");

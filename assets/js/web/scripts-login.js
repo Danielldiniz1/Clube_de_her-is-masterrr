@@ -6,8 +6,13 @@ const senhaInput = document.getElementById("password");
 const toastContainer = document.getElementById("toast-container");
 
 
-// Use the current origin to avoid host mismatches (localhost vs 127.0.0.1)
-const apiBase = `${window.location.origin}/api/users/`;
+// Base dinâmica: considera a subpasta do projeto (ex.: /Clube_de_her-is-master)
+const basePath = (() => {
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    // Primeiro segmento após a raiz representa a pasta do projeto
+    return parts.length > 0 ? `/${parts[0]}` : '';
+})();
+const apiBase = `${window.location.origin}${basePath}/api/users/`;
 const api = new HttpClientBase(apiBase); 
 
 /**
