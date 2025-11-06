@@ -8,6 +8,12 @@ if (php_sapi_name() === 'cli-server') {
     if ($path !== '/' && file_exists($fullPath) && is_file($fullPath)) {
         return false; // Serve the requested resource as-is.
     }
+
+    // Route API requests to api/index.php
+    if (strpos($path, '/api/') === 0) {
+        require __DIR__ . '/api/index.php';
+        return true;
+    }
 }
 
 require __DIR__ . '/index.php';

@@ -1,7 +1,15 @@
 // Renderização e gerenciamento do carrinho via API na página /app/carrinho
 import HttpClientBase from '../../class/HttpClientBase.js';
 
-const BASE_URL = `${window.location.origin}/Clube_de_her-is-master`;
+function getBaseUrl() {
+  const origin = window.location.origin;
+  const path = window.location.pathname;
+  const match = path.match(/^\/Clube_de_her-is-master\b/);
+  const basePath = match ? match[0] : '';
+  return `${origin}${basePath}`;
+}
+
+const BASE_URL = getBaseUrl();
 
 function formatBRL(value) {
   const num = Number(value) || 0;
@@ -37,6 +45,17 @@ async function renderCart() {
   try {
     const response = await api.get('items');
     const cartItems = response?.data?.items || [];
+
+    // Se não autenticado, exibir aviso e não marcar como vazio genérico
+    if (response?.status === 'unauthorized') {
+      if (tableEl) tableEl.style.display = 'none';
+      if (emptyEl) {
+        emptyEl.style.display = 'block';
+        emptyEl.querySelector('p').textContent = 'Faça login para visualizar seu carrinho.';
+      }
+      totalEl.textContent = 'Total: R$ 0,00';
+      return;
+    }
 
     if (!cartItems.length) {
       if (tableEl) tableEl.style.display = 'none';
