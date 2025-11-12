@@ -100,3 +100,7 @@
 .toast.error {
     background-color: #dc3545; /* Vermelho */
 }
+
+.toast.warning {
+    background-color: #ffc107; /* Amarelo */
+}

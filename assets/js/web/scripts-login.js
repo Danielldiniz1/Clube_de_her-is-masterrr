@@ -1,4 +1,5 @@
-import HttpClientBase from '../../class/HttpClientBase.js';
+import HttpUser from '../../class/HttpUser.js';
+import Toast from '../../class/Toast.js';
 
 const form = document.getElementById("formLogin");
 const emailInput = document.getElementById("email");
@@ -8,25 +9,16 @@ const toastContainer = document.getElementById("toast-container");
 
 // Base confiável fornecida pelo servidor via window.__APP_BASE
 const APP_BASE = typeof window.__APP_BASE === 'string' ? window.__APP_BASE : `${window.location.origin}`;
-const apiBase = `${APP_BASE}/api/users/`;
-const api = new HttpClientBase(apiBase); 
+const api = new HttpUser(`${APP_BASE}/api/users`);
+const toast = new Toast();
 
 /**
  * Exibe uma notificação toast na tela.
  * @param {string} message A mensagem a ser exibida.
  * @param {string} type O tipo de toast ('success' ou 'error').
  */
-const showToast = (message, type = 'error') => {
-    if (!toastContainer) return;
-    const toastClass = type === 'error' ? 'toast error' : 'toast';
-    
-    const toastElement = document.createElement('div');
-    toastElement.className = toastClass;
-    toastElement.textContent = message;
-
-    toastContainer.innerHTML = '';
-    toastContainer.appendChild(toastElement);
-};
+// Prefer class-based toast; fallback to global
+const showToast = (message, type = 'error') => toast.show(message, type);
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -39,7 +31,7 @@ form.addEventListener("submit", async (event) => {
     formdata.append("password", password);
 
     try {
-        const response = await api.post("login", formdata);
+        const response = await api.login(formdata);
 
         if (response.type === "success") {
             const token = response.data.user.token;
@@ -55,7 +47,7 @@ form.addEventListener("submit", async (event) => {
             window.location.href = `${APP_BASE}/app`;
 
         } else {
-            showToast(response.message || "Ocorreu um erro inesperado.", 'error');
+            showToast(response.message || "Ocorreu um erro inesperado.", response.type || 'error');
         }
     } catch (error) {
         showToast(error.message || "Ops! Não foi possível conectar ao servidor.", 'error');

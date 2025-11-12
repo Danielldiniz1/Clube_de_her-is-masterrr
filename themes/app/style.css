@@ -421,6 +421,11 @@ footer .container {
     border-left: 5px solid #c82333; /* Vermelho mais escuro */
 }
 
+.toast.warning {
+    background-color: #ffc107; /* Amarelo para aviso */
+    border-left: 5px solid #e0a800; /* Amarelo mais escuro */
+}
+
 @keyframes toast-fade-in {
     from {
         opacity: 0;

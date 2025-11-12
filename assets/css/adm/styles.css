@@ -345,6 +345,11 @@ body.admin-area {
     border-left: 5px solid #c82333;
 }
 
+.toast.warning {
+    background-color: #ffc107; /* Amarelo para aviso */
+    border-left: 5px solid #e0a800;
+}
+
 /* Admin Modal Styles */
 .admin-modal {
     display: none; /* Hidden by default */

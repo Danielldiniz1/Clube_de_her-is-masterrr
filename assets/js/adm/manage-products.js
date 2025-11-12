@@ -1,6 +1,10 @@
-import { showToast, adminApi } from './admin-helpers.js';
+import Toast from '../../class/Toast.js';
+import HttpProduct from '../../class/HttpProduct.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const APP_BASE = typeof window.__APP_BASE === 'string' ? window.__APP_BASE : `${window.location.origin}`;
+    const api = new HttpProduct(`${APP_BASE}/api/products`);
+    const toast = new Toast();
     // Modal elements
     const editModal = document.getElementById('edit-product-modal');
     const closeModalBtn = editModal.querySelector('.close-modal-btn');
@@ -27,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Data Loading ---
     const loadProducts = async () => {
         try {
-            const response = await adminApi.request('/products');
-            const products = response.data.products;
+            const response = await api.list();
+            const products = response?.data?.products || response?.products || [];
             
             tableBody.innerHTML = '';
             if (products && products.length > 0) {
@@ -53,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             tableBody.innerHTML = '<tr><td colspan="6">Erro ao carregar produtos.</td></tr>';
+            toast.show(error.message || 'Erro ao carregar produtos.', 'error');
         }
     };
 
@@ -62,29 +67,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(addProductForm);
         
         try {
-            const response = await fetch(`${adminApi.baseUrl}/products`, {
-                method: 'POST',
-                body: formData
-            });
-            
-            const result = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(result.message || result.mensagem || `HTTP error! status: ${response.status}`);
-            }
-            
-            showToast(result.message || result.mensagem || 'Produto adicionado com sucesso!', 'success');
+            const result = await api.create(formData);
+            toast.fromApi(result);
             addProductForm.reset();
             loadProducts();
         } catch (error) {
             console.error('Erro ao adicionar produto:', error);
-            showToast(error.message || 'Erro ao adicionar produto.', 'error');
+            toast.show(error.message || 'Erro ao adicionar produto.', 'error');
         }
     };
     const handleEdit = async (id) => {
         try {
-            const response = await adminApi.request(`/products/product/${id}`);
-            const product = response.data.product;
+            const response = await api.getById(id);
+            const product = response?.data?.product || response?.product;
             
             editFormTitle.textContent = `Editar Produto: ${product.name}`;
             // Populando o formulário do modal dinamicamente
@@ -155,17 +150,19 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             openEditModal();
         } catch (error) {
-            showToast(error.message || 'Não foi possível carregar os dados do produto.', 'error');
+            toast.show(error.message || 'Não foi possível carregar os dados do produto.', 'error');
         }
     };
 
     const handleDelete = async (id) => {
         if (!confirm('Tem certeza que deseja excluir este produto?')) return;
         try {
-            const response = await adminApi.request(`/products/product/${id}`, 'DELETE');
-            showToast(response.message || 'Produto excluído com sucesso!', 'success');
+            const response = await api.delete(id);
+            toast.fromApi(response);
             loadProducts();
-        } catch (error) {}
+        } catch (error) {
+            toast.show(error.message || 'Erro ao excluir produto.', 'error');
+        }
     };
 
     addProductForm.addEventListener('submit', handleAdd);
@@ -180,23 +177,13 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.textContent = 'Salvando...';
 
         try {
-            const response = await fetch(`${adminApi.baseUrl}/products/product/${id}`, {
-                method: 'PUT',
-                body: formData
-            });
-            
-            const result = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(result.message || result.mensagem || `HTTP error! status: ${response.status}`);
-            }
-            
-            showToast(result.message || result.mensagem || 'Produto atualizado com sucesso!', 'success');
+            const result = await api.update(id, formData);
+            toast.fromApi(result);
             closeEditModal();
             loadProducts();
         } catch (error) {
             console.error('Erro ao atualizar produto:', error);
-            showToast(error.message || 'Erro ao atualizar produto.', 'error');
+            toast.show(error.message || 'Erro ao atualizar produto.', 'error');
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Salvar Alterações';
