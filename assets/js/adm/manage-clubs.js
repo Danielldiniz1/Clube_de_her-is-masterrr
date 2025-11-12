@@ -1,6 +1,9 @@
-import { showToast, adminApi } from './admin-helpers.js';
+import Toast from '../../class/Toast.js';
+import HttpClub from '../../class/HttpClub.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const toast = new Toast();
+    const api = new HttpClub();
     // Modal elements
     const editModal = document.getElementById('edit-club-modal');
     const closeModalBtn = editModal.querySelector('.close-modal-btn');
@@ -27,9 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Data Loading ---
     const loadClubs = async () => {
         try {
-            const response = await adminApi.request('/clubs');
-            const clubs = response.data.clubs;
-            
+            const response = await api.list();
+            const clubs = response?.data?.clubs || response?.clubs || [];
+
             tableBody.innerHTML = '';
             if (clubs && clubs.length > 0) {
                 clubs.forEach(club => {
@@ -52,15 +55,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             tableBody.innerHTML = '<tr><td colspan="5">Erro ao carregar clubes.</td></tr>';
+            toast.show(error.message || 'Falha ao carregar clubes', 'error');
         }
     };
 
     // --- Form and CRUD Logic ---
     const handleEdit = async (id) => {
         try {
-            const response = await adminApi.request(`/clubs/club/${id}`);
-            const club = response.data.club;
-            
+            const response = await api.getById(id);
+            const club = response?.data?.club || response?.club;
+
             editFormTitle.textContent = `Editar Clube: ${club.club_name}`;
             editClubForm.innerHTML = `
                 <input type="hidden" name="id" value="${club.id}">
@@ -80,15 +84,15 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             openEditModal();
         } catch (error) {
-            showToast(error.message || 'Não foi possível carregar os dados do clube.', 'error');
+            toast.show(error.message || 'Não foi possível carregar os dados do clube.', 'error');
         }
     };
 
     const handleDelete = async (id) => {
         if (!confirm('Tem certeza que deseja excluir este clube?')) return;
         try {
-            const response = await adminApi.request(`/clubs/club/${id}`, 'DELETE');
-            showToast(response.message || 'Clube excluído com sucesso!', 'success');
+            const response = await api.delete(id);
+            toast.show(response?.message || 'Clube excluído com sucesso!', 'success');
             loadClubs();
         } catch (error) {}
     };
@@ -97,14 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const submitBtn = addClubForm.querySelector('button[type="submit"]');
         const formData = new FormData(addClubForm);
-        const data = Object.fromEntries(formData.entries());
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'Adicionando...';
 
         try {
-            const response = await adminApi.request('/clubs', 'POST', data);
-            showToast(response.message || 'Clube adicionado com sucesso!', 'success');
+            const response = await api.create(formData);
+            toast.show(response?.message || 'Clube adicionado com sucesso!', 'success');
             addClubForm.reset();
             loadClubs();
         } catch (error) {} 
@@ -118,16 +121,16 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const submitBtn = editClubForm.querySelector('button[type="submit"]');
         const formData = new FormData(editClubForm);
-        const data = Object.fromEntries(formData.entries());
-        data.is_active = editClubForm.querySelector('#edit-is_active').checked ? '1' : '0';
-        const id = data.id;
+        const isActive = editClubForm.querySelector('#edit-is_active').checked ? '1' : '0';
+        formData.set('is_active', isActive);
+        const id = formData.get('id');
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'Salvando...';
 
         try {
-            const response = await adminApi.request(`/clubs/club/${id}`, 'PUT', data);
-            showToast(response.message || 'Clube atualizado com sucesso!', 'success');
+            const response = await api.update(id, formData);
+            toast.show(response?.message || 'Clube atualizado com sucesso!', 'success');
             closeEditModal();
             loadClubs();
         } catch (error) {} 

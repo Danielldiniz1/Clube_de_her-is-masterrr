@@ -72,6 +72,7 @@ echo $this->layout("_theme");
 </div>
 
 <?php $this->start("post-scripts"); ?>
+<script type="module" src="<?= url("assets/js/app/cart-api.js"); ?>"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const table = document.getElementById('cart-table');
