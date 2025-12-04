@@ -22,7 +22,7 @@ export default class HttpProduct extends HttpClientBase {
     return this.put('/product/:id', formData, { id });
   }
 
-  async delete(id) {
-    return this.delete('/product/:id', { id });
+  async remove(id) {
+    return super.delete('/product/:id', { id });
   }
 }

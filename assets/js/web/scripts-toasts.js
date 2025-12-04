@@ -61,6 +61,18 @@
         case 'purchase_complete':
           showToast('Compra finalizada! Comprovante enviado ao seu e-mail.', 'success');
           break;
+        case 'club_created':
+          showToast('Clube criado com sucesso!', 'success');
+          break;
+        case 'product_created':
+          showToast('Produto criado com sucesso!', 'success');
+          break;
+        case 'product_updated':
+          showToast('Produto atualizado com sucesso!', 'success');
+          break;
+        case 'product_deleted':
+          showToast('Produto excluído com sucesso!', 'success');
+          break;
         default:
           showToast('Produto adicionado ao carrinho', 'success');
           break;
@@ -89,6 +101,27 @@
           break;
         case 'email_failed':
           showToast('Falha ao enviar comprovante. Tente novamente.', 'error');
+          break;
+        case 'already_has_club':
+          showToast('Você já possui um clube.', 'error');
+          break;
+        case 'club_create_failed':
+          showToast('Falha ao criar clube.', 'error');
+          break;
+        case 'forbidden':
+          showToast('Apenas vendedores podem acessar Meu Clube.', 'error');
+          break;
+        case 'club_not_found':
+          showToast('Nenhum clube encontrado para sua conta.', 'error');
+          break;
+        case 'create_failed':
+          showToast('Falha ao criar produto.', 'error');
+          break;
+        case 'update_failed':
+          showToast('Falha ao atualizar produto.', 'error');
+          break;
+        case 'delete_failed':
+          showToast('Falha ao excluir produto.', 'error');
           break;
         default:
           showToast('Ocorreu um erro. Tente novamente.', 'error');

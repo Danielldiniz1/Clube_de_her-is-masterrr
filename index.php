@@ -41,8 +41,14 @@ $route->post("/wishlist/adicionar", "App:addWishlist");
 $route->post("/wishlist/remover", "App:removeWishlist");
 $route->get("/listadedesejos", "App:wishlist");
 $route->get("/meuclube", "App:myClub");
+$route->post("/meuclube/criar", "App:createClub");
+$route->post("/meuclube/produto/criar", "App:createClubProduct");
+$route->post("/meuclube/produto/editar", "App:updateClubProduct");
+$route->post("/meuclube/produto/excluir", "App:deleteClubProduct");
 $route->get("/minhascompras", "App:myBuys");
 $route->get("/produtos","App:products");
+$route->get("/assinatura", "App:subscription");
+$route->post("/assinatura/ativar", "App:activateSubscription");
 
 $route->group(null);
 

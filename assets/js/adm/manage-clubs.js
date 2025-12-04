@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleDelete = async (id) => {
         if (!confirm('Tem certeza que deseja excluir este clube?')) return;
         try {
-            const response = await api.delete(id);
+            const response = await api.remove(id);
             toast.show(response?.message || 'Clube excluído com sucesso!', 'success');
             loadClubs();
         } catch (error) {}

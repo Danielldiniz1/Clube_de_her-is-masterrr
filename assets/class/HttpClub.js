@@ -22,7 +22,7 @@ export default class HttpClub extends HttpClientBase {
     return this.put('/club/:id', formData, { id });
   }
 
-  async delete(id) {
-    return this.delete('/club/:id', { id });
+  async remove(id) {
+    return super.delete('/club/:id', { id });
   }
 }

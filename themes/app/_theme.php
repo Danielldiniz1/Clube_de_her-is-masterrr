@@ -30,6 +30,7 @@
             <ul class="nav-menu">
                 <li><a href="<?= url('app/minhascompras'); ?>">Minhas compras</a></li>
                 <li><a href="<?= url('app/produtos'); ?>">Produtos</a></li>
+                <li><a href="<?= url('app/assinatura'); ?>">Assinatura</a></li>
                 <li><a href="<?= url('app/carrinho'); ?>">Meu carrinho</a></li>
                 <li><a href="<?= url('app/meuclube'); ?>">Meu clube</a></li>
                 <li><a href="<?= url('app/listadedesejos'); ?>">Lista de desejos</a></li>
