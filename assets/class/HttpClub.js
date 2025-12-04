@@ -1,9 +1,9 @@
 import HttpClientBase from './HttpClientBase.js';
 
-export default class HttpProduct extends HttpClientBase {
+export default class HttpClub extends HttpClientBase {
   constructor(baseUrl = null) {
     const APP_BASE = typeof window.__APP_BASE === 'string' ? window.__APP_BASE : `${window.location.origin}`;
-    super(baseUrl || `${APP_BASE}/api/products`);
+    super(baseUrl || `${APP_BASE}/api/clubs`);
   }
 
   async list() {
@@ -11,7 +11,7 @@ export default class HttpProduct extends HttpClientBase {
   }
 
   async getById(id) {
-    return this.get('/product/:id', { id });
+    return this.get('/club/:id', { id });
   }
 
   async create(formData) {
@@ -19,10 +19,10 @@ export default class HttpProduct extends HttpClientBase {
   }
 
   async update(id, formData) {
-    return this.put('/product/:id', formData, { id });
+    return this.put('/club/:id', formData, { id });
   }
 
   async remove(id) {
-    return super.delete('/product/:id', { id });
+    return super.delete('/club/:id', { id });
   }
 }

@@ -58,6 +58,9 @@ form.addEventListener("submit", async (event) => {
     if (data.type === "success") {
       resultBox.textContent = "Senha alterada com sucesso!";
       resultBox.style.color = "green";
+      if (typeof window.showToast === 'function') {
+        window.showToast('Senha alterada com sucesso!', 'success');
+      }
       setTimeout(() => {
         modal.style.display = "none";
         resultBox.textContent = "";
@@ -66,9 +69,16 @@ form.addEventListener("submit", async (event) => {
     } else {
       resultBox.textContent = data.message || "Erro ao atualizar senha.";
       resultBox.style.color = "red";
+      if (typeof window.showToast === 'function') {
+        window.showToast(data.message || 'Erro ao atualizar senha.', 'error');
+      }
     }
   } catch (error) {
     console.error("Erro:", error);
     resultBox.textContent = "Erro ao atualizar senha.";
-    resultBox.style.color = "red";}
+    resultBox.style.color = "red";
+    if (typeof window.showToast === 'function') {
+      window.showToast('Erro ao atualizar senha.', 'error');
+    }
+  }
 });

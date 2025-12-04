@@ -55,39 +55,6 @@
             <a href="#" class="btn">ESCOLHER</a>
           </div>
         </div>
-        <div class="plan-card">
-          <div class="plan-header">
-            <h3 class="plan-title">Plano pro</h3>
-            <div class="plan-price">R$20<span class="plan-period">/mês</span></div>
-          </div>
-          <ul class="plan-features">
-            <li>Até 500 assinantes</li>
-            <li>Múltiplos gateways de pagamento</li>
-            <li>Catálogo de produtos avançado</li>
-            <li>Cupons promocionais</li>
-            <li>Suporte prioritário</li>
-          </ul>
-          <div class="plan-footer">
-            <a href="#" class="btn">ESCOLHER</a>
-          </div>
-        </div>
-        <div class="plan-card">
-          <div class="plan-header">
-            <h3 class="plan-title">Plano ultimate</h3>
-            <div class="plan-price">R$30<span class="plan-period">/mês</span></div>
-          </div>
-          <ul class="plan-features">
-            <li>Assinantes ilimitados</li>
-            <li>Todos os gateways de pagamento</li>
-            <li>API completa</li>
-            <li>Relatórios avançados</li>
-            <li>Suporte 24/7</li>
-            <li>Personalização completa</li>
-          </ul>
-          <div class="plan-footer">
-            <a href="#" class="btn">ESCOLHER</a>
-          </div>
-        </div>
       </div>
     </div>
   </section>

@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleDelete = async (id) => {
         if (!confirm('Tem certeza que deseja excluir este produto?')) return;
         try {
-            const response = await api.delete(id);
+            const response = await api.remove(id);
             toast.fromApi(response);
             loadProducts();
         } catch (error) {

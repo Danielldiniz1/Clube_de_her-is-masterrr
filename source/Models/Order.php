@@ -55,10 +55,13 @@ class Order
 
         $orderNumber = date('Ymd-His') . '-' . random_int(100, 999);
         $total = 0.0;
+        $isSubscriber = (function_exists('user_has_active_subscription') && user_has_active_subscription($userId));
+        $discountPercent = $isSubscriber ? 0.10 : 0.0;
         foreach ($items as $item) {
             $qty = (int)($item->quantity ?? 1);
             $price = (float)($item->price ?? 0);
-            $total += ($qty * $price);
+            $priceEff = $price * (1 - $discountPercent);
+            $total += ($qty * $priceEff);
         }
 
         try {
@@ -79,11 +82,12 @@ class Order
                 $name = (string)($item->name ?? 'Produto');
                 $qty = max(1, (int)($item->quantity ?? 1));
                 $price = (float)($item->price ?? 0);
-                $sub = $qty * $price;
+                $priceEff = $price * (1 - $discountPercent);
+                $sub = $qty * $priceEff;
                 $itemStmt->bindValue(':oid', $orderId, \PDO::PARAM_INT);
                 $itemStmt->bindValue(':pid', $pid, \PDO::PARAM_INT);
                 $itemStmt->bindValue(':name', $name, \PDO::PARAM_STR);
-                $itemStmt->bindValue(':price', $price);
+                $itemStmt->bindValue(':price', $priceEff);
                 $itemStmt->bindValue(':qty', $qty, \PDO::PARAM_INT);
                 $itemStmt->bindValue(':sub', $sub);
                 $itemStmt->execute();

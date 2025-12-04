@@ -62,7 +62,21 @@
                             <p class="product-description"><?= htmlspecialchars($product['description']) ?></p>
                         <?php endif; ?>
                         
+                        <?php if (!empty($isSubscriber)): ?>
+                        <div class="product-price">
+                            <span style="text-decoration:line-through; opacity:0.7;">R$ <?= number_format($product['price'], 2, ',', '.') ?></span>
+                            <span style="margin-left:8px; color:#00e676;">R$ <?= number_format($product['price'] * 0.9, 2, ',', '.') ?></span>
+                        </div>
+                        <?php else: ?>
+                        <?php if (!empty($isSubscriber)): ?>
+                        <div class="product-price">
+                            <span style="text-decoration:line-through; opacity:0.7;">R$ <?= number_format($product['price'], 2, ',', '.') ?></span>
+                            <span style="margin-left:8px; color:#00e676;">R$ <?= number_format($product['price'] * 0.9, 2, ',', '.') ?></span>
+                        </div>
+                        <?php else: ?>
                         <div class="product-price">R$ <?= number_format($product['price'], 2, ',', '.') ?></div>
+                        <?php endif; ?>>
+                        <?php endif; ?>>
                         
                         <div class="product-stock <?= $product['stock'] <= 0 ? 'out-of-stock' : '' ?>">
                             <?php if ($product['stock'] > 0): ?>
@@ -174,20 +188,23 @@
     .product-image {
             position: relative;
             width: 100%;
-            height: 220px;
+            height: 260px;
             overflow: hidden;
             border-radius: 10px;
             background: #1a0d0d;
             margin-bottom: 12px;
             flex: 1;
+            line-height: 0;
         }
 
     .product-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 15px;
+            object-position: center center;
+            border-radius: 10px;
             transition: transform 0.3s ease;
+            display: block;
         }
 
     .product-card:hover .product-image img {
@@ -349,9 +366,9 @@
         .carousel-container {
             position: relative;
             width: 100%;
-            height: 220px;
+            height: 260px;
             overflow: hidden;
-            border-radius: 15px;
+            border-radius: 10px;
             flex: 1;
         }
 
@@ -370,6 +387,7 @@
             object-fit: cover;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
+            display: block;
         }
 
         .carousel-image.active {
@@ -471,7 +489,7 @@
 
         .product-image,
         .carousel-container {
-            height: 180px;
+            height: 200px;
         }
 
         .product-image img {
